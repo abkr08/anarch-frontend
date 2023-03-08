@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import Game from './Game';
-import './App.css';
 import { connectAndReconnect, subscribeToOwnChannel } from './websocket/websocket';
+import TrickImages from './TrickImages';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const [name, setName] = useState('');
@@ -24,7 +25,7 @@ function App() {
 
   return (
     <div className="App">
-      <div className="container">
+      <div className="container bg-light bg-warning justify-content-center">
         { route === 'init' ? (
             <>
             <h1>Enter your name</h1>
@@ -37,7 +38,8 @@ function App() {
             </>
         ): (
           <>
-            <Game name={name} setRoute={setRoute} />
+            {/* <Game name={name} setRoute={setRoute} /> */}
+            <TrickImages name={name} setRoute={setRoute} />
           </>
         )}
       

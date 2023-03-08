@@ -11,8 +11,6 @@ const cards = ['6H', '6C', '7D', '9C', '10H', '9S', '4S', '9H', 'JC', 'AD'];
 
 const bids = ['Spade', 'Club', 'Diamond', 'Heart', 'No suit', 'Misére'];
 
-
-
 export default class Game extends Component {
 
 	state = {
