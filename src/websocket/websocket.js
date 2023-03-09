@@ -23,21 +23,22 @@ export const connectAndReconnect = async () => {
 	return stompClient;
 }
 
-export const subscribeToOwnChannel = (name) => {
+export const subscribeToOwnChannel = (name, handleNotification) => {
 	stompClient.subscribe(`/socket-publisher/${name}`, notification => {
 		handleNotification(notification);
 	});
 }
 
-const handleNotification = (data) => {
-	let notification = JSON.parse(data.body);
-	switch (notification.type) {
-		case 'chatRequest':
-			return data;
-		default:
-			console.log(data)
-	}
-}
+// const handleNotification = (data) => {
+//     alert(data);
+//     let notification = JSON.parse(data.body);
+//     switch (notification.type) {
+//       case 'chatRequest':
+//         return data;
+//       default:
+//         console.log(data)
+//     }
+//   }
 
 const sendNotification = notification => {
 	stompClient.send(`/socket-subscriber/${notification.to}`, {}, JSON.stringify(notification))

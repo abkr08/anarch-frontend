@@ -16,12 +16,32 @@ const bids = ['Spade', 'Club', 'Diamond', 'Heart', 'No suit', 'Misére'];
 export default class Game extends Component {
 
 	state = {
-		selectedBid: ''
+		selectedBid: '',
+		hand: []
+	}
+
+	componentDidMount() {
+		// Subscribe to the room the user will be playing in (/play for now)
+		this.props.stompClient.subscribe(`/socket-publisher/play`, notification => {
+			this.handleRoomNotifications(notification);
+		});	
+	}
+
+	handleRoomNotifications = (data) => {
+		let notification = JSON.parse(data.body);
+    switch (notification.type) {
+      case 'player-hand':
+				this.setState({ hand: notification.hand })
+        break;
+      default:
+        console.log(data)
+    }
 	}
 
 	placeBid = () => {
 		const { selectedBid } = this.state;
-		alert(selectedBid)
+		const bidObject = { type: 'place bid', player: this.props.name, bid: selectedBid };
+		this.props.stompClient.send('/socket-subscriber/play', {}, JSON.stringify(bidObject))
 	}
 
 	renderOptions = () => {
@@ -47,13 +67,14 @@ export default class Game extends Component {
 		</div>
 	)}
 	render() {
+		const { playerHand } = this.props;
 		return (
 			<>
 				<h1>Examine your hand and place a bid</h1>
 				<div style={{ display: 'flex', justifyContent: 'space-between' }}>
 					{this.renderOptions()}
 					<div className="card-grid">
-						{cards.map(c => (
+						{playerHand.map(c => (
 							<Cards cardId={c} />
 						))}
 					</div>

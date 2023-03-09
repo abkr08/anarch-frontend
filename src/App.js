@@ -7,6 +7,8 @@ function App() {
   const [name, setName] = useState('');
   const [route, setRoute] = useState('init');
   const [stompClient, setStompClient] = useState(null);
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [playerHand, setPlayerHand] = useState([]);
 
   useEffect(() => {
     const initializeWebSocketConnection = async () => {
@@ -16,10 +18,37 @@ function App() {
     initializeWebSocketConnection()
   }, [])
 
+  useEffect(() => {
+    if (isRegistered) {
+      // setRoute('game');
+    }
+  }, [isRegistered])
+
   const registerUser = () => {
-    // subscribeToOwnChannel(name);
-    stompClient.send(`/socket-subscriber/register`, {}, JSON.stringify(name))
-    setRoute('game')
+    subscribeToOwnChannel(name, handleNotification);
+    stompClient.send(`/socket-subscriber/register`, {}, name)
+  }
+
+  const handleNotification = (data) => {
+    alert(data);
+    let notification = JSON.parse(data.body);
+    switch (notification.type) {
+      case 'registration':
+        if (notification.success) {
+          setIsRegistered(true);
+        }
+        break;
+      case 'player-hand':
+        setPlayerHand(notification.hand);
+        setRoute('game');
+        break;
+      default:
+        console.log(data)
+    }
+  }
+
+  const sendNotification = notification => {
+    stompClient.send(`/socket-subscriber/${notification.to}`, {}, JSON.stringify(notification))
   }
 
   return (
@@ -37,7 +66,7 @@ function App() {
             </>
         ): (
           <>
-            <Game name={name} setRoute={setRoute} />
+            <Game name={name} playerHand={playerHand} setRoute={setRoute} stompClient={stompClient}/>
           </>
         )}
       
