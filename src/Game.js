@@ -4,20 +4,18 @@ import React, { Component } from 'react';
 import './App.css';
 
 import Cards from './Cards';
-
-import './App.css';
+import TrickImages from './TrickImages';
 
 const cards = ['6H', '6C', '7D', '9C', '10H', '9S', '4S', '9H', 'JC', 'AD'];
 
 const bids = ['Spade', 'Club', 'Diamond', 'Heart', 'No suit', 'Misére'];
 
-
-
 export default class Game extends Component {
 
 	state = {
 		selectedBid: '',
-		hand: []
+		hand: [],
+		activeScreen: 'place-bid'
 	}
 
 	componentDidMount() {
@@ -42,6 +40,9 @@ export default class Game extends Component {
 		const { selectedBid } = this.state;
 		const bidObject = { type: 'place bid', player: this.props.name, bid: selectedBid };
 		this.props.stompClient.send('/socket-subscriber/play', {}, JSON.stringify(bidObject))
+		setTimeout(() => {
+			this.setState({ activeScreen: 'play-trick'});
+		}, 5000);
 	}
 
 	renderOptions = () => {
@@ -68,18 +69,26 @@ export default class Game extends Component {
 	)}
 	render() {
 		const { playerHand } = this.props;
-		return (
-			<>
-				<h1>Examine your hand and place a bid</h1>
-				<div style={{ display: 'flex', justifyContent: 'space-between' }}>
-					{this.renderOptions()}
-					<div className="card-grid">
-						{playerHand.map(c => (
-							<Cards cardId={c} />
-						))}
+		const { activeScreen } = this.state;
+
+		if (activeScreen == 'place-bid') {
+			return (
+				<>
+					<h1>Examine your hand and place a bid</h1>
+					<div style={{ display: 'flex', justifyContent: 'space-between' }}>
+						{this.renderOptions()}
+						<div className="card-grid">
+							{playerHand.map(c => (
+								<Cards cardId={c} />
+							))}
+						</div>
 					</div>
-				</div>
-			</>
-		)
+				</>
+			)
+		} else {
+			return (
+				<TrickImages name={name} setRoute={setRoute} />
+			)
+		}
 	}
 }
