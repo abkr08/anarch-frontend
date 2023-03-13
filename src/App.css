@@ -27,7 +27,7 @@ button {
   padding: 10px;
   border: 1px solid gray;
   border-radius: 3px;
-  margin-top: 15px;
+  margin-top: 15px !important;
   cursor: pointer;
   width: 10%;
   font-size: 16px;
@@ -35,11 +35,31 @@ button {
   outline: none;
 }
 
-.card {
-  height: 70%;
-  width: 50%;
+button:disabled, input:disabled {
+  cursor: not-allowed;
+}
+
+.waiting-text {
+  color:lightsalmon;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  font-style: italic;
+}
+
+.cardd {
+  display: inline-block;
+  height: 200px;
   cursor: pointer;
-  overflow: hidden;
+}
+
+.rest{
+  margin-left: -90px;
+}
+
+.cardd:hover {
+  transform: scale(1.1);
+  transition: all 0.5s;
 }
 
 .emptyBox {
@@ -64,6 +84,13 @@ button {
   gap: 1rem;
 }
 
+.card-gridd {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .deck-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -72,15 +99,15 @@ button {
 }
 
 
-.card img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover; /* preserve aspect ratio and fill the container */
+.play-trick-screen .card {
+  /* width: 100%; */
+  /* height: 100%; */
+  /* object-fit: cover; preserve aspect ratio and fill the container */
   transition: transform 0.3s ease; /* add transition effect */
 }
 
 /* Add CSS for the hover effect */
-.card:hover img {
+.play-trick-screen .card:hover {
   transform: scale(1.1); /* scale the image by 10% on hover */
 }
 .list-container {
@@ -124,13 +151,47 @@ li:hover {
   font-weight: 900;
 }
 
-.bid-button {
+.selected-card {
+  border: 2px solid green !important;
+  /* transform: translate3d() */
+  /* padding: 10px; */
+}
+
+.bid-button, .register-user {
   width: 300px;
   height: 50px;
   align-self: center;
   font-weight: 900;
   border: 1px solid gray;
   cursor: pointer;
+}
+
+.shared-deck {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid gray;
+  padding: 10px;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.shared-deck-card-container {
+  text-align: center;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.shared-deck-card-container img {
+  /* width: 60%; */
+  height: 200px;
+  border: 1px solid gray;
+  padding: 5px;
+  border-radius: 5px;
+  /* object-fit: cover; */
 }
 
 
