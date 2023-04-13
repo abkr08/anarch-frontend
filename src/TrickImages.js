@@ -9,8 +9,15 @@ export default class Game extends Component {
   }
 
   playTrick = () => {
-    const { selectedCard, trickCount } = this.state;
-    const { cards, setPlayerHand, stompClient, handleSetGameState } = this.props;
+    let { selectedCard } = this.state;
+    let isBombThrown = false;
+    const { cards, setPlayerHand, stompClient, handleSetGameState, undealtCard, setUndealtCard, name } = this.props;
+    if (selectedCard === "Joker") {
+      alert('Bomb thrown');
+      isBombThrown = true;
+      // setUndealtCard('')
+    }
+
     const selectedCardIdx = cards.indexOf(selectedCard);
 
     handleSetGameState({ canPlayTrick: false });
@@ -23,9 +30,9 @@ export default class Game extends Component {
     setPlayerHand(updatedPlayerHand);
 
     // Send trick details to the backend
-    const trickObject = { type: 'play-trick', player: this.props.name, trick: selectedCard, trickCount: trickCount + 1 };
-		stompClient.send('/socket-subscriber/play', {}, JSON.stringify(trickObject));
-    this.setState({ selectedCard: ''})
+    const trickObject = { type: 'play-trick', player: name, trick: selectedCard, isBombThrown };
+    stompClient.send('/socket-subscriber/play', {}, JSON.stringify(trickObject));
+    this.setState({ selectedCard: '' });
   }
 
   handleClick = (card) => {
@@ -35,7 +42,9 @@ export default class Game extends Component {
   render() {
     const { cards, activeScreen, allBidsPlaced, undealtCard,
       selectedBid, revealedCards, revealingCards, registeredPlayers,
-      playedTrick, capturedCards, trickCount, canPlayTrick
+      playedTrick, capturedCards, trickCount, canPlayTrick, handleSetGameState,
+      showShowResultsButton, name, isDealer, playerCapturedCards, showCapturedCards,
+      toggleShowCapturedCards, isBombThrown, arnachist, game
     } = this.props
     const { selectedCard } = this.state;
     return (
@@ -54,18 +63,34 @@ export default class Game extends Component {
           playedTrick={playedTrick}
           capturedCards={capturedCards}
           trickCount={trickCount}
+          name={name}
+          isDealer={isDealer}
+          playerCapturedCards={playerCapturedCards}
+          toggleShowCapturedCards={toggleShowCapturedCards}
+          showCapturedCards={showCapturedCards}
+          isBombThrown={isBombThrown}
+          arnachist={arnachist}
+          game={game}
         />
-        { selectedCard && <p style={{ fontWeight: 'bold', textAlign: 'center'}}>Selected Card: {selectedCard}</p> }
-        { !allBidsPlaced && <p className="waiting-text">Waiting for other players to place their bids...</p>}
-        { !canPlayTrick && <p className="waiting-text">Round in progress...</p>}
+        {selectedCard && <p style={{ fontWeight: 'bold', textAlign: 'center' }}>Selected Card: {selectedCard}</p>}
+        {!allBidsPlaced && <p className="waiting-text">Waiting for other players to place their bids...</p>}
+        {!canPlayTrick && <p className="waiting-text">Round in progress...</p>}
         <div style={{ display: 'flex', flexFlow: 'column' }}>
           <button
             className="bid-button"
             onClick={this.playTrick}
-            disabled={!allBidsPlaced || !canPlayTrick}
+            disabled={!allBidsPlaced || !canPlayTrick || showShowResultsButton}
           >
             Play trick
           </button>
+          {showShowResultsButton && (
+            <button
+              className="bid-button"
+              onClick={() => handleSetGameState({ activeScreen: 'result' })}
+            >
+              Show Results
+            </button>
+          )}
         </div>
       </div>
     )

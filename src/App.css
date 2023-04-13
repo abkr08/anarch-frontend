@@ -53,8 +53,18 @@ button:disabled, input:disabled {
   cursor: pointer;
 }
 
+.captured-card {
+  display: inline-block;
+  height: 100px;
+  cursor: pointer;
+}
+
 .rest{
   margin-left: -90px;
+}
+
+.restt{
+  margin-right: -90px;
 }
 
 .cardd:hover {
@@ -76,12 +86,6 @@ button:disabled, input:disabled {
   height: 100%;
   object-fit: cover; /* preserve aspect ratio and fill the container */
   transition: transform 0.3s ease; /* add transition effect */
-}
-
-.card-grid {
-  display: grid; 
-  grid-template-columns: repeat(5, auto); 
-  gap: 1rem;
 }
 
 .card-gridd {
@@ -129,7 +133,7 @@ button:disabled, input:disabled {
 }
 
 li {
-  height: 100px;
+  /* height: 100px; */
   border: 1px solid gray;
   border-bottom: none;
   cursor: pointer;
@@ -139,6 +143,8 @@ li {
   font-size: -webkit-xxx-large;
   font-weight: lighter;
   width: 300px;
+  /* min-width: fit-content;
+  padding: 10px; */
 }
 
 #selectedBid {
@@ -166,14 +172,30 @@ li:hover {
   cursor: pointer;
 }
 
+.back-button {
+  width: fit-content;
+  height: 50px;
+  align-self: center;
+  font-weight: 900;
+  border: 1px solid gray;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+
 .shared-deck {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border: 1px solid gray;
   padding: 10px;
-  margin-bottom: 15px;
   text-align: center;
+  width: 100%;
+}
+
+.shared-deck-container {
+  text-align: center;
+  border: 1px solid gray;
+  margin-bottom: 15px;
 }
 
 .shared-deck-card-container {
@@ -193,5 +215,41 @@ li:hover {
   border-radius: 5px;
   /* object-fit: cover; */
 }
+
+.result {
+  text-align: center;
+  padding: 30px;
+  width: 100%;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 80%;
+  margin: 0 auto;
+}
+
+td, th {
+  border: 1px solid #dddddd !important;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.gameOptions {
+  display: flex;
+}
+
+.gameOptions li {
+  width: 400px;
+  border-bottom: 1px solid black !important;
+
+
+}
+
+
 
 

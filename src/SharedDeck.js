@@ -6,18 +6,20 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 const images = require.context('../public/cards/', true);
 const mockRevealedCards = {'John': 'AH', 'Sam': '10D'};
 export default function SharedDeck({
-	cardSelected, revealedCards, revealingCards,
-	undealtCard, registeredPlayers, playingTrick, playedTrick, capturedCards
+	cardSelected, revealedCards, revealingCards, arnachist,
+	undealtCard, registeredPlayers, playingTrick, playedTrick, capturedCards, game, isBombThrown
 }) {
-	// const players = ['John', 'Sam', 'Mark', 'Kevin', 'Ian']
+	// const registeredPlayers = ['John', 'Sam', 'Mark', 'Kevin', 'Ian'];
+	// const undealtCard = "Joker";
 	// players.map(p => console.log(p, mockRevealedCards))
 	
 	const renderCard = (owner, cardId) => (
-		<div className="shared-deck-container">
+		<div>
 			<div className="shared-deck-card-container">
 				<img
 					src={images(`./${cardId}.png`)}
 					alt=''
+					key={cardId}
 					// id={c}
 					// className="card"
 				/>
@@ -35,9 +37,13 @@ export default function SharedDeck({
 		</div>
 	)
 	return (
-		<div className="shared-deck">
+		<div className="shared-deck-container">
+			{ isBombThrown && (
+				<p style={{ color: 'tomato', fontWeight: 'bold'}}>Bomb has been thrown by {' ' + arnachist}, so capturing order will be reversed!</p>
+			)}
+			<div className="shared-deck">
 			{ undealtCard ? (
-				<>{renderCard('Undealt Card', undealtCard)}</>
+				<>{renderCard(game === 'Anarchy' ? 'Undealt Card' : "Odd Card", undealtCard)}</>
 			) :
 			null}
 			{
@@ -51,6 +57,7 @@ export default function SharedDeck({
 					return renderCard(p, imageSource);
 				})
 			}
+		</div>
 		</div>
 	)
 }
