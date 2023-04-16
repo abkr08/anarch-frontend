@@ -11,11 +11,10 @@ export default class Game extends Component {
   playTrick = () => {
     let { selectedCard } = this.state;
     let isBombThrown = false;
-    const { cards, setPlayerHand, stompClient, handleSetGameState, undealtCard, setUndealtCard, name } = this.props;
+    const { cards, setPlayerHand, stompClient, handleSetGameState, name } = this.props;
     if (selectedCard === "Joker") {
       alert('Bomb thrown');
       isBombThrown = true;
-      // setUndealtCard('')
     }
 
     const selectedCardIdx = cards.indexOf(selectedCard);
@@ -79,7 +78,7 @@ export default class Game extends Component {
           <button
             className="bid-button"
             onClick={this.playTrick}
-            disabled={!allBidsPlaced || !canPlayTrick || showShowResultsButton}
+            disabled={!allBidsPlaced || !canPlayTrick || showShowResultsButton || !selectedCard}
           >
             Play trick
           </button>
